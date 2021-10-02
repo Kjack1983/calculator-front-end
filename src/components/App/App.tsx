@@ -186,7 +186,7 @@ export const App: React.FC = (): JSX.Element => {
 
             setPendingOperator(undefined);
         } else {
-            setDisplay(operand.toString());
+            setDisplay(String(operand));
         }
 
         setFinalResult(operand);
