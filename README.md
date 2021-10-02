@@ -1,5 +1,7 @@
 # Calculator
 
+## Tech stack: #react #typescript
+
 ## Branches
 * `master`
 
@@ -36,5 +38,3 @@ Runs the app in the development mode. Open http://localhost:3000 to view it in t
 Builds the app for production to the `build` folder.
 
 ```
-
-## Tech stack: #react #typescript
