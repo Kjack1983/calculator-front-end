@@ -5,18 +5,7 @@
 
 ![calculator-front-end](/src/screenshots/screenshot.png?raw=true "images")
 
-## Keyboard Shortcuts
-| Shortcut          | Description   |
-|-------------------|---------------|
-| <kbd>Delete</kbd> | Clear Entry   |
-| <kbd>Esc</kbd>    | Clear All     |
-| <kbd>Enter</kbd>  | Equal         |
-| <kbd>n</kbd>      | Change Sign   |
-| <kbd>p</kbd>      | Memory Plus   |
-| <kbd>q</kbd>      | Memory Minus  |
-| <kbd>r</kbd>      | Memory Recall |
-
----
+# Keyboard Shortcuts
 
 | Shortcut             | Description       |
 |:-------------------: |:-----------------:|
