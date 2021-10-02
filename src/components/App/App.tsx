@@ -16,7 +16,7 @@ const CalcStyledApp = styled.div`
 `;
 
 export const App: React.FC = (): JSX.Element => {
-    // Calculator's states
+    // Calculator state management.
     const [memoize, setMemoize] = useState<number>(0);
     const [finalResult, setFinalResult] = useState<number>(0);
     const [pendingOperand, setPendingOperand] = useState<boolean>(true);
