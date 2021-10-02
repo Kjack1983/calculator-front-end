@@ -18,6 +18,16 @@
 
 ---
 
+| Shortcut             | Description       |
+|:-------------------: |:-----------------:|
+| <code>Delete</code>  |  Clear Entry      |
+| <code>Esc</code>     |  Clear All        |
+| <code>Enter</code>   |  Equal            |
+| <code>n</code>       |  Change Sign      |
+| <code>p</code>       |  Memory Plus      |
+| <code>q</code>       |  Memory Minus     |
+| <code>r</code>       |  Memory Recall    |
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
