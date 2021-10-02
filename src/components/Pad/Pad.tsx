@@ -1,21 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../Button/Button";
-import { Digit, Operator } from "../../utils/interfaces";
-
-interface PadProps {
-    onDigitButtonClick: (digit: Digit) => void;
-    onPointButtonClick: () => void;
-    onOperatorButtonClick: (operator: Operator) => void;
-    onChangeSignButtonClick: () => void;
-    onEqualButtonClick: () => void;
-    onAllClearButtonClick: () => void;
-    onClearEntryButtonClick: () => void;
-    onMemoryRecallButtonClick: () => void;
-    onMemoryClearButtonClick: () => void;
-    onMemoryPlusButtonClick: () => void;
-    onMemoryMinusButtonClick: () => void;
-}
+import { Digit, PadProps } from "../../utils/interfaces";
 
 const StyledPad = styled.div`
     display: grid;
