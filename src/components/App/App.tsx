@@ -172,7 +172,7 @@ export const App: React.FC = (): JSX.Element => {
     };
 
 	/**
-	 * onEqualButtonClick handling
+	 * equal button handling
 	 * 
 	 * @return {void}
 	 */
