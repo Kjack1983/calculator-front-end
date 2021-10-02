@@ -16,12 +16,12 @@ const colorDisplay = (color: ButtonProps["color"]) => {
             `;
         case "green":
             return css`
-                background-color: #044424;
-                color: #f7a313;
+                background-color: #041d2b;
+                color: #f2b046;
 
                 &:hover,
                 &:focus {
-                    background-color: #022d18;
+                    background-color: #03151e;
                 }
             `;
         case "dark":

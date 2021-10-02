@@ -11,7 +11,7 @@ const CalcStyledApp = styled.div`
         "Segoe UI Emoji", "Segoe UI Symbol";
     font-size: 17px;
     width: 100%;
-    border: 2px solid rgb(0, 63, 255);
+    border: 1px solid #05324c;
 	max-width: 500px;
 `;
 
@@ -107,9 +107,9 @@ export const App: React.FC = (): JSX.Element => {
         }
 
         if (display !== "0") {
-            newDisplay = newDisplay + digit.toString();
+            newDisplay = newDisplay + String(digit);
         } else {
-            newDisplay = digit.toString();
+            newDisplay = String(digit);
         }
 
         setDisplay(newDisplay);
@@ -142,7 +142,6 @@ export const App: React.FC = (): JSX.Element => {
 	 * @return {void}
 	 */
     const onOperatorButtonClick = (operator: Operator):void => {
-		console.log('operator :>> ', operator);
 		const operand = Number(display);
 
         if (typeof pendingOperator !== "undefined" && !pendingOperand) {

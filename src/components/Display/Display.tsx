@@ -27,7 +27,7 @@ const ScreenStyle = styled.div`
 `;
 
 const DisplayStyled = styled.div`
-    background-color: #095a89;
+    background-color: #042130;
     color: #fff;
     padding: 1.5em 1em;
 `;
