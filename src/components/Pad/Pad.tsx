@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useEffect } from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Button from "../Button/Button";
 import { Digit, PadProps } from "../../utils/interfaces";
@@ -9,20 +9,23 @@ const StyledPad = styled.div`
     grid-auto-rows: 1fr;
 `;
 
-export const Pad: FunctionComponent<PadProps> = ({
+export const Pad: React.FC<PadProps> = ({
     onDigitButtonClick,
-    onPointButtonClick,
+    onDotButtonClick,
     onOperatorButtonClick,
     onChangeSignButtonClick,
     onEqualButtonClick,
-    onAllClearButtonClick,
-    onClearEntryButtonClick,
-    onMemoryRecallButtonClick,
-    onMemoryClearButtonClick,
-    onMemoryPlusButtonClick,
-    onMemoryMinusButtonClick,
-}) => {
-    const handleKeyDown = ({ keyCode, shiftKey }: KeyboardEvent): void => {
+    onClearAllButtonClick,
+    clearEntryButtonClick,
+    memoryRecallButtonClick,
+    clearMemoryButtonClick,
+    memoryPlusButtonClick,
+    memoryMinusButtonClick,
+}):JSX.Element => {
+    const handleKeyDown = ({ 
+		keyCode, 
+		shiftKey 
+	}: KeyboardEvent): void => {
         console.log(keyCode);
         if (keyCode >= 48 && keyCode <= 57 && !shiftKey) {
             onDigitButtonClick((keyCode - 48) as Digit);
@@ -39,17 +42,17 @@ export const Pad: FunctionComponent<PadProps> = ({
         } else if (keyCode === 13 || (keyCode === 187 && !shiftKey)) {
             onEqualButtonClick();
         } else if (keyCode === 46) {
-            onClearEntryButtonClick();
+            clearEntryButtonClick();
         } else if (keyCode === 27) {
-            onAllClearButtonClick();
+            onClearAllButtonClick();
         } else if (keyCode === 78) {
             onChangeSignButtonClick();
         } else if (keyCode === 80) {
-            onMemoryPlusButtonClick();
+            memoryPlusButtonClick();
         } else if (keyCode === 81) {
-            onMemoryMinusButtonClick();
+            memoryMinusButtonClick();
         } else if (keyCode === 82) {
-            onMemoryRecallButtonClick();
+            memoryRecallButtonClick();
         }
     };
 
@@ -62,14 +65,14 @@ export const Pad: FunctionComponent<PadProps> = ({
 
     return (
         <StyledPad>
-            <Button onClick={onMemoryRecallButtonClick}>MR</Button>
-            <Button onClick={onMemoryClearButtonClick}>MC</Button>
-            <Button onClick={onMemoryPlusButtonClick}>M+</Button>
-            <Button onClick={onMemoryMinusButtonClick}>M-</Button>
-            <Button color="red" onClick={onAllClearButtonClick}>
+            <Button onClick={memoryRecallButtonClick}>MR</Button>
+            <Button onClick={clearMemoryButtonClick}>MC</Button>
+            <Button onClick={memoryPlusButtonClick}>M+</Button>
+            <Button onClick={memoryMinusButtonClick}>M-</Button>
+            <Button color="red" onClick={onClearAllButtonClick}>
                 AC
             </Button>
-            <Button onClick={onClearEntryButtonClick}>C</Button>
+            <Button onClick={clearEntryButtonClick}>C</Button>
             <Button onClick={onChangeSignButtonClick}>-/+</Button>
             <Button color="dark" onClick={() => onOperatorButtonClick("÷")}>
                 ÷
@@ -93,7 +96,7 @@ export const Pad: FunctionComponent<PadProps> = ({
                 +
             </Button>
             <Button onClick={() => onDigitButtonClick(0)}>0</Button>
-            <Button onClick={onPointButtonClick}>.</Button>
+            <Button onClick={onDotButtonClick}>.</Button>
             <Button color="green" isLarge={true} onClick={onEqualButtonClick}>
                 =
             </Button>
@@ -101,4 +104,4 @@ export const Pad: FunctionComponent<PadProps> = ({
     );
 };
 
-export default Pad;
+export default React.memo(Pad);

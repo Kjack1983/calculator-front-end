@@ -1,6 +1,22 @@
-import React from 'react';
-import { Operands } from '../utils/interfaces';
+import React, {useState} from 'react';
+import { Operator, Operands } from '../utils/interfaces';
 import { baseUrl } from '../shared/baseUrl';
+
+
+export const useCalcOperations = () => {
+	const [memory, setMemory] = useState<number>(0);
+    const [result, setResult] = useState<number>(0);
+    const [waitingForOperand, setWaitingForOperand] = useState<boolean>(true);
+    const [pendingOperator, setPendingOperator] = useState<Operator>();
+	const [display, setDisplay] = useState<string>("0");
+	
+	return [
+		memory, setMemory, result, setResult,
+		waitingForOperand, setWaitingForOperand,
+		pendingOperator, setPendingOperator,
+		display, setDisplay
+	]
+}
 
 /**
  * Addition calc operation.

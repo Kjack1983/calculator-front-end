@@ -2,94 +2,108 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Display from "../Display/Display";
 import Pad from "../Pad/Pad";
-import { Digit, Operator} from "../../utils/interfaces";
-import * as operations from '../../hooks/helperMethods';
+import { Digit, Operator } from "../../utils/interfaces";
+import * as operations from "../../helpers/helperMethods";
 
-const StyledApp = styled.div`
+const CalcStyledApp = styled.div`
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
         "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji",
         "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 16px;
-	width: 100%;
-	border: 2px solid rgb(0, 63, 255);
-    max-width: 600px;
+    font-size: 17px;
+    width: 100%;
+    border: 2px solid rgb(0, 63, 255);
+	max-width: 500px;
 `;
 
 export const App: React.FC = (): JSX.Element => {
     // Calculator's states
-    const [memory, setMemory] = useState<number>(0);
-    const [result, setResult] = useState<number>(0);
-    const [waitingForOperand, setWaitingForOperand] = useState<boolean>(true);
+    const [memoize, setMemoize] = useState<number>(0);
+    const [finalResult, setFinalResult] = useState<number>(0);
+    const [pendingOperand, setPendingOperand] = useState<boolean>(true);
     const [pendingOperator, setPendingOperator] = useState<Operator>();
     const [display, setDisplay] = useState<string>("0");
 
-    const calculate = async(rightOperand: number, pendingOperator: Operator): Promise<any> => {
-        let newResult = result;
+    const calculate = async (
+        rightOperand: number,
+        pendingOperator: Operator
+    ): Promise<any> => {
+        let newResult = finalResult;
 
-		let myOperands = {
-			leftOperand: newResult, 
-			rightOperand: rightOperand
-		}
-
-		switch (pendingOperator) {
+        switch (pendingOperator) {
             case "+":
-				let sum = await operations.addition(myOperands);
+                let sum = await operations.addition({
+					leftOperand: newResult,
+					rightOperand: rightOperand
+				});
 
-				if(!sum) {
-					return false;
-				}
+                if (!sum) {
+                    return false;
+                }
 
                 newResult = sum;
                 break;
             case "-":
-				let subtraction = await operations.subtraction(myOperands);
+                let subtraction = await operations.subtraction({
+					leftOperand: newResult,
+					rightOperand: rightOperand
+				});
 
-				if(!subtraction) {
-					return false;
-				}
+                if (!subtraction) {
+                    return false;
+                }
 
                 newResult = subtraction;
                 break;
             case "×":
-				let multiplication = await operations.multiplication(myOperands);
+                let multiplication = await operations.multiplication({
+					leftOperand: newResult,
+					rightOperand: rightOperand
+				});
 
-				if(!multiplication) {
-					return false;
-				}
+                if (!multiplication) {
+                    return false;
+                }
 
-				newResult = multiplication;
+                newResult = multiplication;
                 break;
             case "÷":
                 if (rightOperand === 0) {
                     return false;
-				}
-				
-				let division = await operations.division(myOperands);
+                }
 
-				if(!division) {
-					return false;
-				}
+                let division = await operations.division({
+					leftOperand: newResult,
+					rightOperand: rightOperand
+				});
 
-                newResult = division	;
+                if (!division) {
+                    return false;
+                }
+
+                newResult = division;
         }
 
-        setResult(newResult);
+        setFinalResult(newResult);
         setDisplay(String(newResult).slice(0, 12));
 
         return true;
     };
 
-    // Pad buttons handlers
-    const onDigitButtonClick = (digit: Digit):void => {
+    /**
+	 * Pad buttons handlers
+	 * 
+	 * @return {void}
+	 */
+    const onDigitButtonClick = (digit: Digit): void => {
         let newDisplay = display;
 
         if ((display === "0" && digit === 0) || display.length > 12) {
             return;
         }
 
-        if (waitingForOperand) {
+        if (pendingOperand) {
             newDisplay = "";
-            setWaitingForOperand(false);
+            setPendingOperand(false);
         }
 
         if (display !== "0") {
@@ -101,37 +115,54 @@ export const App: React.FC = (): JSX.Element => {
         setDisplay(newDisplay);
     };
 
-    const onPointButtonClick = () => {
+    /**
+     * Point handling.
+	 * 
+	 * @return {void}
+     */
+    const onDotButtonClick = ():void => {
         let newDisplay = display;
 
-        if (waitingForOperand) {
+        if (pendingOperand) {
             newDisplay = "0";
         }
 
-        if (newDisplay.indexOf(".") === -1) {
+        if (!newDisplay.includes(".")) {
             newDisplay = newDisplay + ".";
         }
 
         setDisplay(newDisplay);
-        setWaitingForOperand(false);
+        setPendingOperand(false);
     };
 
-    const onOperatorButtonClick = (operator: Operator) => {
-        const operand = Number(display);
+	/**
+	 * Operator handling buttons. 
+	 * 
+	 * @param {string }operator
+	 * @return {void}
+	 */
+    const onOperatorButtonClick = (operator: Operator):void => {
+		console.log('operator :>> ', operator);
+		const operand = Number(display);
 
-        if (typeof pendingOperator !== "undefined" && !waitingForOperand) {
+        if (typeof pendingOperator !== "undefined" && !pendingOperand) {
             if (!calculate(operand, pendingOperator)) {
                 return;
             }
         } else {
-            setResult(operand);
+            setFinalResult(operand);
         }
 
         setPendingOperator(operator);
-        setWaitingForOperand(true);
+        setPendingOperand(true);
     };
 
-    const onChangeSignButtonClick = () => {
+	/**
+	 * Sign handling buttons.
+	 * 
+	 * @return {void}
+	 */
+    const onChangeSignButtonClick = ():void => {
         const value = Number(display);
 
         if (value > 0) {
@@ -141,10 +172,15 @@ export const App: React.FC = (): JSX.Element => {
         }
     };
 
+	/**
+	 * onEqualButtonClick handling
+	 * 
+	 * @return {void}
+	 */
     const onEqualButtonClick = () => {
         const operand = Number(display);
 
-        if (typeof pendingOperator !== "undefined" && !waitingForOperand) {
+        if (typeof pendingOperator !== "undefined" && !pendingOperand) {
             if (!calculate(operand, pendingOperator)) {
                 return;
             }
@@ -154,71 +190,76 @@ export const App: React.FC = (): JSX.Element => {
             setDisplay(operand.toString());
         }
 
-        setResult(operand);
-        setWaitingForOperand(true);
+        setFinalResult(operand);
+        setPendingOperand(true);
     };
 
-    const onAllClearButtonClick = () => {
-        setMemory(0);
-        setResult(0);
+	/**
+	 * Clear all buttons handling
+	 * 
+	 * @return {void}
+	 */
+    const onClearAllButtonClick = ():void => {
+        setMemoize(0);
+        setFinalResult(0);
         setPendingOperator(undefined);
         setDisplay("0");
-        setWaitingForOperand(true);
+        setPendingOperand(true);
     };
 
-    const onClearEntryButtonClick = () => {
+    const clearEntryButtonClick = () => {
         setDisplay("0");
-        setWaitingForOperand(true);
+        setPendingOperand(true);
     };
 
-    const onMemoryRecallButtonClick = () => {
-        setDisplay(memory.toString());
-        setWaitingForOperand(true);
+    const memoryRecallButtonClick = () => {
+        setDisplay(String(memoize));
+        setPendingOperand(true);
     };
 
-    const onMemoryClearButtonClick = () => {
-        setMemory(0);
-        setWaitingForOperand(true);
+    const clearMemoryButtonClick = () => {
+        setMemoize(0);
+        setPendingOperand(true);
     };
 
-    const onMemoryPlusButtonClick = () => {
-        setMemory(memory + Number(display));
-        setWaitingForOperand(true);
+    const memoryPlusButtonClick = () => {
+        setMemoize(memoize + Number(display));
+        setPendingOperand(true);
     };
 
-    const onMemoryMinusButtonClick = () => {
-        setMemory(memory - Number(display));
-        setWaitingForOperand(true);
+    const memoryMinusButtonClick = () => {
+        setMemoize(memoize - Number(display));
+        setPendingOperand(true);
     };
 
     return (
-        <StyledApp>
+        <CalcStyledApp>
             <Display
                 value={display}
-                hasMemory={memory !== 0}
+                hasMemory={memoize !== 0}
                 expression={
                     typeof pendingOperator !== "undefined"
-                        ? `${result}${pendingOperator}${
-                              waitingForOperand ? "" : display
+                        ? `${finalResult}${pendingOperator}${
+                              pendingOperand ? "" : display
                           }`
                         : ""
                 }
             />
             <Pad
                 onDigitButtonClick={onDigitButtonClick}
-                onPointButtonClick={onPointButtonClick}
+                onDotButtonClick={onDotButtonClick}
                 onOperatorButtonClick={onOperatorButtonClick}
                 onChangeSignButtonClick={onChangeSignButtonClick}
                 onEqualButtonClick={onEqualButtonClick}
-                onAllClearButtonClick={onAllClearButtonClick}
-                onClearEntryButtonClick={onClearEntryButtonClick}
-                onMemoryRecallButtonClick={onMemoryRecallButtonClick}
-                onMemoryClearButtonClick={onMemoryClearButtonClick}
-                onMemoryPlusButtonClick={onMemoryPlusButtonClick}
-                onMemoryMinusButtonClick={onMemoryMinusButtonClick}
+                onClearAllButtonClick={onClearAllButtonClick}
+                clearEntryButtonClick={clearEntryButtonClick}
+                memoryRecallButtonClick={memoryRecallButtonClick}
+                clearMemoryButtonClick={clearMemoryButtonClick}
+                memoryPlusButtonClick={memoryPlusButtonClick}
+                memoryMinusButtonClick={memoryMinusButtonClick}
             />
-        </StyledApp>
+        </CalcStyledApp>
     );
 };
 
-export default App;
+export default  React.memo(App);
