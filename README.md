@@ -27,8 +27,7 @@ In the project directory, you can run:
 #### `npm start`
 
 ```
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the app in the development mode. Open http://localhost:3000 to view it in the browser.
 
 ```
 
@@ -36,6 +35,7 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
 ```
 Builds the app for production to the `build` folder.
+
 ```
 
 ## Tech stack: #react #typescript
