@@ -1,5 +1,5 @@
 import React from 'react';
-import { Operands } from '../lib/types';
+import { Operands } from '../utils/interfaces';
 import { baseUrl } from '../shared/baseUrl';
 
 /**

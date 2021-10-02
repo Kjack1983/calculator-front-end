@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from "react";
 import styled from "styled-components";
 import Button from "../Button/Button";
-import { Digit, Operator } from "../../lib/types";
+import { Digit, Operator } from "../../utils/interfaces";
 
 interface PadProps {
     onDigitButtonClick: (digit: Digit) => void;

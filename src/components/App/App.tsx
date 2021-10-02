@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import Display from "../Display/Display";
 import Pad from "../Pad/Pad";
-import { Digit, Operator} from "../../lib/types";
+import { Digit, Operator} from "../../utils/interfaces";
 import * as operations from '../../hooks/helperMethods';
 
 const StyledApp = styled.div`
