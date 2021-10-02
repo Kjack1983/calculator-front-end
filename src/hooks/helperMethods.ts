@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Operands } from '../lib/types';
 import { baseUrl } from '../shared/baseUrl';
 
