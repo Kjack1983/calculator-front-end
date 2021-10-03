@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import styled from "styled-components";
 import Display from "../Display/Display";
 import Pad from "../Pad/Pad";
@@ -12,7 +12,7 @@ const CalcStyledApp = styled.div`
     font-size: 17px;
     width: 100%;
     border: 1px solid #05324c;
-	max-width: 500px;
+    max-width: 500px;
 `;
 
 export const App: React.FC = (): JSX.Element => {
@@ -32,9 +32,9 @@ export const App: React.FC = (): JSX.Element => {
         switch (pendingOperator) {
             case "+":
                 let sum = await operations.addition({
-					leftOperand: newResult,
-					rightOperand: rightOperand
-				});
+                    leftOperand: newResult,
+                    rightOperand: rightOperand,
+                });
 
                 if (!sum) {
                     return false;
@@ -44,9 +44,9 @@ export const App: React.FC = (): JSX.Element => {
                 break;
             case "-":
                 let subtraction = await operations.subtraction({
-					leftOperand: newResult,
-					rightOperand: rightOperand
-				});
+                    leftOperand: newResult,
+                    rightOperand: rightOperand,
+                });
 
                 if (!subtraction) {
                     return false;
@@ -56,9 +56,9 @@ export const App: React.FC = (): JSX.Element => {
                 break;
             case "×":
                 let multiplication = await operations.multiplication({
-					leftOperand: newResult,
-					rightOperand: rightOperand
-				});
+                    leftOperand: newResult,
+                    rightOperand: rightOperand,
+                });
 
                 if (!multiplication) {
                     return false;
@@ -72,9 +72,9 @@ export const App: React.FC = (): JSX.Element => {
                 }
 
                 let division = await operations.division({
-					leftOperand: newResult,
-					rightOperand: rightOperand
-				});
+                    leftOperand: newResult,
+                    rightOperand: rightOperand,
+                });
 
                 if (!division) {
                     return false;
@@ -84,20 +84,21 @@ export const App: React.FC = (): JSX.Element => {
         }
 
         setFinalResult(newResult);
-        setDisplay(String(newResult).slice(0, 12));
+        setDisplay(String(newResult).slice(0, 15));
 
         return true;
     };
 
     /**
-	 * Pad buttons handlers
-	 * 
-	 * @return {void}
-	 */
+     * Pad buttons handlers
+     *
+     * @return {void}
+     */
     const onDigitButtonClick = (digit: Digit): void => {
         let newDisplay = display;
 
-        if ((display === "0" && digit === 0) || display.length > 12) {
+        //Leaving the length of display as 15 numbers maximum otherwise it might break.
+        if ((display === "0" && digit === 0) || display.length > 15) {
             return;
         }
 
@@ -117,10 +118,10 @@ export const App: React.FC = (): JSX.Element => {
 
     /**
      * Point handling.
-	 * 
-	 * @return {void}
+     *
+     * @return {void}
      */
-    const onDotButtonClick = ():void => {
+    const onDotButtonClick = (): void => {
         let newDisplay = display;
 
         if (pendingOperand) {
@@ -135,14 +136,14 @@ export const App: React.FC = (): JSX.Element => {
         setPendingOperand(false);
     };
 
-	/**
-	 * Operator handling buttons. 
-	 * 
-	 * @param {string }operator
-	 * @return {void}
-	 */
-    const onOperatorButtonClick = (operator: Operator):void => {
-		const operand = Number(display);
+    /**
+     * Operator handling buttons.
+     *
+     * @param {string }operator
+     * @return {void}
+     */
+    const onOperatorButtonClick = (operator: Operator): void => {
+        const operand = Number(display);
 
         if (typeof pendingOperator !== "undefined" && !pendingOperand) {
             if (!calculate(operand, pendingOperator)) {
@@ -156,12 +157,12 @@ export const App: React.FC = (): JSX.Element => {
         setPendingOperand(true);
     };
 
-	/**
-	 * Sign handling buttons.
-	 * 
-	 * @return {void}
-	 */
-    const onChangeSignButtonClick = ():void => {
+    /**
+     * Sign handling buttons.
+     *
+     * @return {void}
+     */
+    const onChangeSignButtonClick = (): void => {
         const value = Number(display);
 
         if (value > 0) {
@@ -171,11 +172,11 @@ export const App: React.FC = (): JSX.Element => {
         }
     };
 
-	/**
-	 * equal button handling
-	 * 
-	 * @return {void}
-	 */
+    /**
+     * equal button handling
+     *
+     * @return {void}
+     */
     const onEqualButtonClick = () => {
         const operand = Number(display);
 
@@ -193,12 +194,12 @@ export const App: React.FC = (): JSX.Element => {
         setPendingOperand(true);
     };
 
-	/**
-	 * Clear all buttons handling
-	 * 
-	 * @return {void}
-	 */
-    const onClearAllButtonClick = ():void => {
+    /**
+     * Clear all buttons handling
+     *
+     * @return {void}
+     */
+    const onClearAllButtonClick = (): void => {
         setMemoize(0);
         setFinalResult(0);
         setPendingOperator(undefined);
@@ -211,25 +212,25 @@ export const App: React.FC = (): JSX.Element => {
         setPendingOperand(true);
     };
 
-    const memoryRecallButtonClick = () => {
+    const memoryRecallButtonClick = useCallback(() => {
         setDisplay(String(memoize));
         setPendingOperand(true);
-    };
+    }, [memoize]);
 
     const clearMemoryButtonClick = () => {
         setMemoize(0);
         setPendingOperand(true);
     };
 
-    const memoryPlusButtonClick = () => {
+    const memoryPlusButtonClick = useCallback(() => {
         setMemoize(memoize + Number(display));
         setPendingOperand(true);
-    };
+    }, [memoize, display]);
 
-    const memoryMinusButtonClick = () => {
+    const memoryMinusButtonClick = useCallback(() => {
         setMemoize(memoize - Number(display));
         setPendingOperand(true);
-    };
+    }, [memoize, display]);
 
     return (
         <CalcStyledApp>
@@ -261,4 +262,4 @@ export const App: React.FC = (): JSX.Element => {
     );
 };
 
-export default  React.memo(App);
+export default React.memo(App);

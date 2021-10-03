@@ -22,10 +22,7 @@ export const Pad: React.FC<PadProps> = ({
     memoryPlusButtonClick,
     memoryMinusButtonClick,
 }):JSX.Element => {
-    const handleKeyDown = ({ 
-		keyCode, 
-		shiftKey 
-	}: KeyboardEvent): void => {
+    const handleKeyDown = ({ keyCode, shiftKey }: KeyboardEvent): void => {
         console.log(keyCode);
         if (keyCode >= 48 && keyCode <= 57 && !shiftKey) {
             onDigitButtonClick((keyCode - 48) as Digit);

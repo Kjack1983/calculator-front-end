@@ -12,6 +12,13 @@ export interface PadProps {
     memoryMinusButtonClick: () => void;
 }
 
+export interface returnMappedValues {
+	display: string;
+	pendingOperand: boolean;
+	digit: Digit;
+	setPendingOperand: (type:boolean) => void;
+	setDisplay: (type:string) => void;
+}
 
 export interface DisplayProps {
     hasMemory: boolean;
