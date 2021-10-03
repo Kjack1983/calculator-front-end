@@ -1,6 +1,6 @@
 # Calculator
 
-## Tech stack: #react #typescript
+## Tech stack: #react #typescript #styled components framework.
 
 ## Branches
 * `master`
