@@ -49,7 +49,7 @@ export const addition = async(operands: Operands):Promise<any> => {
  * 
  * @param {number} leftOperand
  * @param {number} rightOperand
- * @return {number | boolean} sum 
+ * @return {number | boolean} substraction 
  */
 export const subtraction = async(operands: Operands):Promise<any> => {
 	let { leftOperand, rightOperand } = operands;
@@ -76,7 +76,7 @@ export const subtraction = async(operands: Operands):Promise<any> => {
  * 
  * @param {number} leftOperand
  * @param {number} rightOperand
- * @return {number | boolean} sum 
+ * @return {number | boolean} multiplication 
  */
 export const multiplication = async(operands: Operands):Promise<any> => {
 	let { leftOperand, rightOperand } = operands;
@@ -102,7 +102,7 @@ export const multiplication = async(operands: Operands):Promise<any> => {
  * 
  * @param {number} leftOperand
  * @param {number} rightOperand
- * @return {number | boolean} sum 
+ * @return {number | boolean} division 
  */
 export const division = async(operands: Operands):Promise<any> => {
 	let { leftOperand, rightOperand } = operands;
